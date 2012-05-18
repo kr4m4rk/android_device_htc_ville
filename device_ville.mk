@@ -237,7 +237,11 @@ PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_AAPT_CONFIG := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_LOCALES += en_US hdpi
-PRODUCT_VERSION_DEVICE_SPECIFIC=-alpha4
+PRODUCT_VERSION_DEVICE_SPECIFIC=-alpha5
+
+# For RomManager
+ADDITIONAL_BUILD_PROPERTIES += \
+		ro.rommanager.developerid=xkonni
 
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/htc/ville/ville-vendor.mk)
