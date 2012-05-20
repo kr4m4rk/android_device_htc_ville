@@ -39,7 +39,6 @@ static int g_backlight = 255;
 
 char const*const AMBER_LED_FILE = "/sys/class/leds/amber/brightness";
 char const*const GREEN_LED_FILE = "/sys/class/leds/green/brightness";
-char const*const BLUE_LED_FILE = "/sys/class/leds/blue/brightness";
 
 char const*const BUTTON_FILE = "/sys/class/leds/button-backlight/brightness";
 
@@ -51,8 +50,22 @@ char const*const LCD_BACKLIGHT_FILE = "/sys/class/leds/lcd-backlight/brightness"
 enum {
 	LED_AMBER,
 	LED_GREEN,
-	LED_BLUE,
 	LED_BLANK,
+};
+
+enum {
+  PULSE_LENGTH_VERY_SHORT = 1,
+  PULSE_LENGTH_SHORT = 2,
+  PULSE_LENGTH_NORMAL= 3,
+  PULSE_LENGTH_LONG= 4,
+  PULSE_LENGTH_ALWAYS_ON = 5,
+};
+
+enum {
+  BLINK_MODE_VERY_SHORT = 1,
+  BLINK_MODE_SHORT = 2,
+  BLINK_MODE_NORMAL= 3,
+  BLINK_MODE_LONG= 4,
 };
 
 /**
@@ -92,40 +105,48 @@ static int is_lit (struct light_state_t const* state) {
 static void set_speaker_light_locked (struct light_device_t *dev, struct light_state_t *state) {
 	unsigned int colorRGB = state->color & 0xFFFFFF;
 	unsigned int color = LED_BLANK;
+	unsigned int blinkMode = BLINK_MODE_NORMAL;
 
-	if (colorRGB & 0xFF)
-		color = LED_BLUE;
 	if ((colorRGB >> 8)&0xFF)
 		color = LED_GREEN;
-	if ((colorRGB >> 16)&0xFF)
+	if (((colorRGB >> 16)&0xFF) > ((colorRGB >> 8)&0xFF))
 		color = LED_AMBER;
 
-	int amber = (colorRGB >> 16)&0xFF;
-	int green = (colorRGB >> 8)&0xFF;
-	int blue = (colorRGB)&0xFF;
+  switch(state->flashOnMS) {
+    case PULSE_LENGTH_VERY_SHORT:
+      blinkMode = BLINK_MODE_VERY_SHORT;
+      break;
+    case PULSE_LENGTH_SHORT:
+      blinkMode = BLINK_MODE_SHORT;
+      break;
+    case PULSE_LENGTH_NORMAL:
+      blinkMode = BLINK_MODE_NORMAL;
+      break;
+    case PULSE_LENGTH_LONG:
+      blinkMode = BLINK_MODE_LONG;
+      break;
+    case PULSE_LENGTH_ALWAYS_ON:
+      state->flashMode = LIGHT_FLASH_NONE;
+      break;
+  }
+
 
 	switch (state->flashMode) {
 		case LIGHT_FLASH_TIMED:
 			switch (color) {
 				case LED_AMBER:
-					write_int (AMBER_BLINK_FILE, 4);
+					write_int (AMBER_BLINK_FILE, 1);
 					write_int (GREEN_LED_FILE, 0);
-					write_int (BLUE_LED_FILE, 0);
+					write_int (AMBER_BLINK_FILE, blinkMode);
 					break;
 				case LED_GREEN:
 					write_int (GREEN_BLINK_FILE, 1);
 					write_int (AMBER_LED_FILE, 0);
-					write_int (BLUE_LED_FILE, 0);
-					break;
-				case LED_BLUE:
-					write_int (BLUE_LED_FILE, 1);
-					write_int (AMBER_LED_FILE, 0);
-					write_int (GREEN_LED_FILE, 0);
+					write_int (GREEN_BLINK_FILE, blinkMode);
 					break;
 				case LED_BLANK:
 					write_int (AMBER_BLINK_FILE, 0);
 					write_int (GREEN_BLINK_FILE, 0);
-					write_int (BLUE_LED_FILE, 0);
 					break;
 				default:
 					LOGE("set_led_state colorRGB=%08X, unknown color\n",
@@ -138,22 +159,14 @@ static void set_speaker_light_locked (struct light_device_t *dev, struct light_s
 				case LED_AMBER:
 					write_int (AMBER_LED_FILE, 1);
 					write_int (GREEN_LED_FILE, 0);
-					write_int (BLUE_LED_FILE, 0);
 					break;
 				case LED_GREEN:
 					write_int (AMBER_LED_FILE, 0);
 					write_int (GREEN_LED_FILE, 1);
-					write_int (BLUE_LED_FILE, 0);
-					break;
-				case LED_BLUE:
-					write_int (AMBER_LED_FILE, 0);
-					write_int (GREEN_LED_FILE, 0);
-					write_int (BLUE_LED_FILE, 1);
 					break;
 				case LED_BLANK:
 					write_int (AMBER_LED_FILE, 0);
 					write_int (GREEN_LED_FILE, 0);
-					write_int (BLUE_LED_FILE, 0);
 					break;
 
 			}
@@ -169,19 +182,24 @@ static void set_speaker_light_locked_dual (struct light_device_t *dev, struct li
 
 	unsigned int bcolorRGB = bstate->color & 0xFFFFFF;
 	unsigned int bcolor = LED_BLANK;
+  unsigned int blinkMode = BLINK_MODE_LONG;
+
 
 	if ((bcolorRGB >> 8)&0xFF) bcolor = LED_GREEN;
 	if ((bcolorRGB >> 16)&0xFF) bcolor = LED_AMBER;
 
-	if (bcolor == LED_AMBER) {
-		write_int (GREEN_LED_FILE, 1);
-		write_int (AMBER_BLINK_FILE, 4);
-		write_int (BLUE_LED_FILE, 0);
-	} else if (bcolor == LED_GREEN) {
-		write_int (GREEN_LED_FILE, 1);
-		write_int (AMBER_BLINK_FILE, 1);
-		write_int (BLUE_LED_FILE, 0);
-	} else {
+  switch (bcolor) {
+    case LED_AMBER:
+      write_int (AMBER_BLINK_FILE, 1);
+      write_int (GREEN_LED_FILE, 1);
+      write_int (AMBER_BLINK_FILE, 4);
+      break;
+    case LED_GREEN:
+      write_int (GREEN_BLINK_FILE, 1);
+      write_int (AMBER_LED_FILE, 1);
+      write_int (GREEN_BLINK_FILE, 4);
+      break;
+    default:
 		LOGE("set_led_state (dual) unexpected color: bcolorRGB=%08x\n", bcolorRGB);
 	}
 
