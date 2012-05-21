@@ -133,11 +133,11 @@ PRODUCT_PACKAGES += \
     libQcomUI \
     libtilerenderer
 
-# GPS 
+# GPS
 #PRODUCT_PACKAGES += \
 #    gps.ville \
 
-# Light
+# Lights
 PRODUCT_PACKAGES += \
     lights.ville
 
