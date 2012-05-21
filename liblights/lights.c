@@ -182,14 +182,14 @@ static void set_speaker_light_locked_dual(struct light_device_t *dev,
 
   switch (bcolor) {
     case LED_AMBER:
-      write_int (AMBER_BLINK_FILE, 1);
-      write_int (GREEN_LED_FILE, 1);
-      write_int (AMBER_BLINK_FILE, 4);
-      break;
-    case LED_GREEN:
       write_int (GREEN_BLINK_FILE, 1);
       write_int (AMBER_LED_FILE, 1);
       write_int (GREEN_BLINK_FILE, 4);
+      break;
+    case LED_GREEN:
+      write_int (AMBER_BLINK_FILE, 1);
+      write_int (GREEN_LED_FILE, 1);
+      write_int (AMBER_BLINK_FILE, 4);
       break;
     default:
       LOGE("set_led_state (dual) unexpected color: bcolorRGB=%08x\n", bcolorRGB);
