@@ -120,7 +120,8 @@ PRODUCT_PACKAGES += \
     audio_policy.msm8960 \
     audio.primary.msm8960 \
     libalsa-intf \
-    libaudioutils
+    libaudioutils \
+		Apollo
 
 # Graphics
 PRODUCT_PACKAGES += \
