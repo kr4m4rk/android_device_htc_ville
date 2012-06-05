@@ -18,7 +18,7 @@ ro.baseband.arch=msm
 lpa.decode=true
 
 # graphics
-debug.composition.type=dyn
+debug.composition.type=c2d
 debug.enabletr=true
 debug.sf.hw=1
 ro.opengles.version=131072
