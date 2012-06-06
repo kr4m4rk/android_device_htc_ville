@@ -47,21 +47,15 @@ TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
 COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
 
-# Scorpion optimizations
-#TARGET_USE_SCORPION_BIONIC_OPTIMIZATION := true
-#TARGET_USE_SCORPION_PLD_SET := true
-#TARGET_SCORPION_BIONIC_PLDOFFS := 6
-#TARGET_SCORPION_BIONIC_PLDSIZE := 128
-
 # Kernel
 BOARD_KERNEL_BASE := 0x80400000
 BOARD_KERNEL_PAGE_SIZE := 2048
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8
 BOARD_FORCE_RAMDISK_ADDRESS := 0x81800000
 
-TARGET_PREBUILT_KERNEL := device/htc/ville/prebuilt/kernel
-#TARGET_KERNEL_CONFIG := ville_defconfig
-#TARGET_KERNEL_SOURCE := kernel/htc/msm8960
+#TARGET_PREBUILT_KERNEL := device/htc/ville/prebuilt/kernel
+TARGET_KERNEL_CONFIG := ville_defconfig
+TARGET_KERNEL_SOURCE := kernel/htc/msm8960
 
 # Init
 TARGET_PROVIDES_INIT_RC := true
@@ -106,9 +100,6 @@ TARGET_PROVIDES_LIBLIGHTS := true
 
 # RIL
 BOARD_PROVIDES_LIBRIL := true
-
-# USB
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun0/file
 
 # Wifi
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
