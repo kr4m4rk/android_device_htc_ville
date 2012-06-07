@@ -232,11 +232,17 @@ PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_AAPT_CONFIG := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_LOCALES += en_US hdpi
-PRODUCT_VERSION_DEVICE_SPECIFIC=-alpha8.1
+PRODUCT_VERSION_DEVICE_SPECIFIC=-alpha8.5
 
 # For RomManager
 ADDITIONAL_BUILD_PROPERTIES += \
 		ro.rommanager.developerid=xkonni
+
+# For GooManager
+ADDITIONAL_BUILD_PROPERTIES += \
+		ro.goo.developerid=xkonni \
+		ro.goo.rom=cm-ville-dev \
+		ro.goo.version=9
 
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/htc/ville/ville-vendor.mk)
