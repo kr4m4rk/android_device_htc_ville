@@ -142,7 +142,7 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_LOCALES += en_US hdpi
 #
 # Version
-CM_EXTRAVERSION = dev13
+CM_EXTRAVERSION = alpha13
 
 # For RomManager
 ADDITIONAL_BUILD_PROPERTIES += \
@@ -151,7 +151,7 @@ ADDITIONAL_BUILD_PROPERTIES += \
 # For GooManager
 ADDITIONAL_BUILD_PROPERTIES += \
 		ro.goo.developerid=xkonni \
-		ro.goo.rom=cm-ville-dev \
+		ro.goo.rom=cm-ville-alpha \
 		ro.goo.version=13
 
 # call the proprietary setup
