@@ -142,7 +142,7 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 PRODUCT_LOCALES += en_US hdpi
 #
 # Version
-CM_EXTRAVERSION = alpha13
+CM_EXTRAVERSION = alpha14
 
 # For RomManager
 ADDITIONAL_BUILD_PROPERTIES += \
@@ -152,7 +152,7 @@ ADDITIONAL_BUILD_PROPERTIES += \
 ADDITIONAL_BUILD_PROPERTIES += \
 		ro.goo.developerid=xkonni \
 		ro.goo.rom=cm-ville-alpha \
-		ro.goo.version=13
+		ro.goo.version=14
 
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/htc/ville/ville-vendor.mk)
