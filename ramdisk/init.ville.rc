@@ -8,6 +8,9 @@ on early-init
     symlink /mnt/sdcard /sdcard
 
 on init
+    mkdir /system
+    mkdir /data 0771 system system
+    mkdir /cache 0771 system cache
     mkdir /devlog 0700 root root
 
 on emmc-fs
