@@ -49,6 +49,10 @@ on post-fs-data
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_done 1
 
+    # prepare kernel for wifi module
+    setprop ro.product.wireless WCN3660
+    write /dev/wcnss_wlan 1
+
 on boot
     # Chown polling nodes as needed from UI running on system server
     chown system system /persist
@@ -198,6 +202,7 @@ service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
     disabled
 
 service netmgrd /system/bin/netmgrd
+    class main
 
 service qcamerasvr /system/bin/mm-qcamera-daemon
     class main
@@ -210,14 +215,12 @@ service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
     oneshot
 
 service qcom-sh /system/bin/sh /init.qcom.sh
-    class core
+    class main
     user root
     oneshot
 
-service qcom-wifi /system/bin/sh /system/etc/init.qcom.wifi.sh
-    oneshot
-
 service qmuxd /system/bin/qmuxd
+    class main
     user radio
     group radio
 
