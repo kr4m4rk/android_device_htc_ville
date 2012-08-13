@@ -148,7 +148,7 @@ ADDITIONAL_BUILD_PROPERTIES += \
 ADDITIONAL_BUILD_PROPERTIES += \
 		ro.goo.developerid=xkonni \
 		ro.goo.rom=cm-ville \
-		ro.goo.version=20120708
+		ro.goo.version=20120713
 
 # call the proprietary setup
 $(call inherit-product-if-exists, vendor/htc/ville/ville-vendor.mk)
