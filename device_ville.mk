@@ -82,8 +82,12 @@ PRODUCT_COPY_FILES += \
     device/htc/ville/idc/tv-touchscreen.idc:system/usr/idc/tv-touchscreen.idc
 
 # GPS
-#PRODUCT_PACKAGES += \
-#    gps.ville \
+PRODUCT_PACKAGES += \
+    gps.ville \
+    libgps.utils \
+    libloc_adapter \
+    libloc_api_v02 \
+    libloc_eng
 
 # Lights
 PRODUCT_PACKAGES += \
